@@ -10,23 +10,25 @@ public class JokeData {
             "Why did the one-handed man cross the road?\n" + "\n" + "To get to the second hand shop.",
             "Why did the turkey cross the road?\n" + "\n" + "Because he wasn't a chicken.",
     };
-    public static String[] getAllJokes(){
+
+    public static String[] getAllJokes() {
         return jokes;
     }
-    public static String getJoke(int index){
+
+    public static String getJoke(int index) {
         return jokes[index];
     }
-    public static String getRandomJoke(){
+
+    public static String getRandomJoke() {
         double randomValue = Math.random();
         int length = jokes.length;
-        double splitVal = 1/length;
+        double splitVal = ( (double) 1 / (double) length);
 
-        double minDiff = 0;
+        double minDiff = 1;
         int minIndex = 0;
-
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             double currentDiff = randomValue - (i * splitVal);
-            if (currentDiff < minDiff){
+            if (Math.abs(currentDiff) < Math.abs(minDiff)) {
                 minDiff = currentDiff;
                 minIndex = i;
             }
