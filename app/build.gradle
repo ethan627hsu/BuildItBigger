@@ -11,7 +11,7 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
 
     defaultConfig {
@@ -36,17 +36,22 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     endpointsServer project(path: ':backend', configuration: 'endpoints')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    androidTestImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.google.android.gms:play-services-ads:11.8.0'
     implementation 'com.google.api-client:google-api-client:1.23.0'
     implementation 'com.google.http-client:google-http-client-android:1.23.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.1'
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'org.mockito:mockito-core:1.10.19'
+
 
     implementation project(':jokeLib')
+    implementation project(':jokeDisplayLib')
 }
