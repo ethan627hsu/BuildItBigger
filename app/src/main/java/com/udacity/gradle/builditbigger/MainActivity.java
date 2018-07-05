@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -23,12 +22,13 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
+    onJokeQuery reponseTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -57,13 +57,22 @@ public class MainActivity extends AppCompatActivity {
         new EndpointsAsyncTask().execute(this);
 
     }
+
+    public void setJokeResponse(onJokeQuery callback) {
+        reponseTask = callback;
+    }
+
+    public interface onJokeQuery {
+        void jokeQueried(String response);
+    }
+
     class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
         private MyApi myApiService = null;
         private Context context;
 
         @Override
         protected String doInBackground(Context... context) {
-            if(myApiService == null) {
+            if (myApiService == null) {
                 MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                         new AndroidJsonFactory(), null)
                         .setRootUrl("http://10.0.2.2:8080/_ah/api/")
@@ -89,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             //        Toast.makeText(this, JokeData.getRandomJoke(), Toast.LENGTH_SHORT).show();
-            Intent launchIntent  = new Intent(MainActivity.this, JokeDisplay.class);
-            launchIntent.putExtra(JokeDisplay.EXTRA_JOKE_DATA,JokeData.getRandomJoke());
+            reponseTask.jokeQueried(result);
+            Intent launchIntent = new Intent(MainActivity.this, JokeDisplay.class);
+            launchIntent.putExtra(JokeDisplay.EXTRA_JOKE_DATA, JokeData.getRandomJoke());
             startActivity(launchIntent);
         }
     }
